@@ -1,0 +1,41 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        string input = "This is a sample string containing dates like 12312021, 02292020, and 13072023.";
+
+        FindValidDates(input);
+
+        Console.ReadLine();
+    }
+
+    static void FindValidDates(string input)
+    {
+        Regex regex = new Regex(@"(\d{2})(\d{2})(\d{4})");
+        MatchCollection matches = regex.Matches(input);
+
+        foreach (Match match in matches)
+        {
+            string dateString = match.Value;
+            if (IsValidDate(dateString))
+            {
+                Console.WriteLine("Valid date found: " + dateString);
+            }
+        }
+    }
+
+    static bool IsValidDate(string dateString)
+    {
+        if (DateTime.TryParseExact(dateString, "MMddyyyy", null, System.Globalization.DateTimeStyles.None, out DateTime date))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
